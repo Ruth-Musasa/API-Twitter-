@@ -8,9 +8,13 @@ router.get('/', (req, res) => {
     res.json(tweets);
 });
 router.post('/', tweetController.getTweet);
-// router.post('/', tweetController.getTweet);
-// router.post('/', tweetController.getTweet);
+
+// router.get('/:tweetId', tweetController.getTweetId(tweetId));
+router.put('/', tweetController.putTweetId);
+router.delete('/', tweetController.deleteTweetId);
+
 
 module.exports = router;
 
 
+ 
