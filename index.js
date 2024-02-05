@@ -1,22 +1,14 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const twiterAPI = require('./Models/tweetModel');
+const tweetRoute= require('./Routes/tweetRoute.js')
 const app = express();
 const port = 3000;
 
-app.get('/crée', Tweet)
+app.use(bodyParser.json());
 
-app.get('/lire', (req, res) => {
-    res.status(200).send('Bonjour KADEA')
-})
-
-app.post('/ajour', (req, res) => {
-    res.status(200).send('Bonjour KADEA')
-})
-
-app.delete('/supprimer', (req, res) => {
-    res.status(200).send('Bonjour KADEA')
-})
-
+app.use('/tweet', tweetRoute)
 
 app.listen(port, () => {
-    console.log('API for Twiter');
-})
+  console.log(`Votre serveur pour API de Twiter est lancé sur http://localhost:${port}`);
+});
