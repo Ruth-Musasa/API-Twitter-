@@ -7,7 +7,7 @@ const port = 3000;
 
 app.use(bodyParser.json());
 
-app.use('/tweet', tweetRoute)
+app.use('/', tweetRoute)
 
 app.listen(port, () => {
   console.log(`Votre serveur pour API de Twiter est lancé sur http://localhost:${port}`);

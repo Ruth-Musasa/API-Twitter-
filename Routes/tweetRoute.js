@@ -2,19 +2,18 @@ const express = require('express')
 const router = express.Router()
 const twiterAPI = require('../Models/tweetModel.js')
 const tweetController = require('../Controlleurs/tweetController.js')
-const tweets = twiterAPI;
-
-router.get('/', (req, res) => {
-    res.json(tweets);
+router.get('/tweets', (req, res) => {
+    res.json(twiterAPI.tweets);
 });
-router.post('/', tweetController.getTweet);
-
-// router.get('/:tweetId', tweetController.getTweetId(tweetId));
-router.put('/', tweetController.putTweetId);
-router.delete('/', tweetController.deleteTweetId);
-
+router.get('/users', (req, res) => {
+    res.json(twiterAPI.users);
+});
+router.post('/tweet', tweetController.getTweet);
+router.post('/user', tweetController.getUse);
+router.get('/:tweetId', tweetController.getTweetId);
+router.put('/', tweetController.putTweet);
+router.delete('/:id', tweetController.deleteTweetId);
 
 module.exports = router;
 
 
- 
