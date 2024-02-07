@@ -1,13 +1,15 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const twiterAPI = require('./Models/tweetModel');
 const tweetRoute= require('./Routes/tweetRoute.js')
+const userRoute=require('./Routes/userRoute.js')
 const app = express();
 const port = 3000;
 
-app.use(bodyParser.json());
+app.use(express.json());
 
-app.use('/', tweetRoute)
+app.use('/tweets', tweetRoute)
+app.use('/users', userRoute)
+
 
 app.listen(port, () => {
   console.log(`Votre serveur pour API de Twiter est lancé sur http://localhost:${port}`);

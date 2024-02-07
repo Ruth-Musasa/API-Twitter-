@@ -3,21 +3,7 @@ const tweets = twiterAPI.tweets;
 const users = twiterAPI.users;
 
 const tweetController = {
-    getUse: (req, res) => {
-        const { source , src_avatar } = req.body;
-        if (!source || !src_avatar) {
-            return res.status(400).json({ error: "Votre utilisateur n'a pas etait enregistrée veillez remplir tous les elements demandés" });
-        }
-        const newUser = {
-            src_avatar,
-            source,
-            idUser: users.length + 1,
-            "isVerified": true,
-        };
-        users.push(newUser);
-        res.status(201).json(newUser);
-    },
-    getTweet: (req, res) => {
+    postTweet: (req, res) => {
         const { text, image, idUser } = req.body;
         if (!text || !image || !idUser) {
             return res.status(400).json({ error: 'Tweet vide, Publiez un text ou une image' });
@@ -33,18 +19,7 @@ const tweetController = {
             image,
         };
         tweets.push(newTweet);
-        res.status(201).json(newTweet);
-    },
-    getTweetId: (req, res) => {
-        const tweetId = req.params.id;
-        try {
-            const Tweet = tweets.getTweetById(tweetId)
-            res.json(Tweet)
-        } catch (error) {
-            console.log(error);
-            res.status(501)
-        }
-
+        res.status(201).json(tweets);
     },
     putTweet: (req, res) => {
         const { favorites } = req.body;
@@ -54,19 +29,12 @@ const tweetController = {
             }
         }
     },
-    deleteUserId: (req, res) => {
-        const id = req.params.id;
-        if (id == newUser.idUser) {
-            users.slice(id, id + 1);
-            res.status(201).json(users);
-        }
-    },
     deleteTweetId: (req, res) => {
         const id = req.params.id;
-        if (id == newTweet.id) {
-            tweets.slice(id, id + 1);
+        // if (id == newTweet.id) {
+            tweets.splice(id-1, 1);
             res.status(201).json(tweets);
-        }
+        // }
     }
 }
 
