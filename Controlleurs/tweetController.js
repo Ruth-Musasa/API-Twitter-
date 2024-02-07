@@ -31,14 +31,12 @@ const tweetController = {
             "retweets": "0",
             text,
             image,
-
         };
         tweets.push(newTweet);
         res.status(201).json(newTweet);
     },
     getTweetId: (req, res) => {
         const tweetId = req.params.id;
-        // res.json({ id: tweetId, name: 'Exemple' })
         try {
             const Tweet = tweets.getTweetById(tweetId)
             res.json(Tweet)
@@ -56,13 +54,19 @@ const tweetController = {
             }
         }
     },
-    deleteTweetId: (req, res) => {
+    deleteUserId: (req, res) => {
         const id = req.params.id;
         if (id == newUser.idUser) {
             users.slice(id, id + 1);
             res.status(201).json(users);
         }
-
+    },
+    deleteTweetId: (req, res) => {
+        const id = req.params.id;
+        if (id == newTweet.id) {
+            tweets.slice(id, id + 1);
+            res.status(201).json(tweets);
+        }
     }
 }
 
