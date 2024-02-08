@@ -1,7 +1,8 @@
-const twiterAPI = require('../Models/tweetModel.js')
+const twiterAPI = require('../Models/tweetModel.js');
 const tweets = twiterAPI.tweets;
 const users = twiterAPI.users;
-
+// let likeTweet = parseInt(tweets.favorites);
+let likeTweet = 56;
 const tweetController = {
     postTweet: (req, res) => {
         const { text, image, idUser } = req.body;
@@ -21,20 +22,30 @@ const tweetController = {
         tweets.push(newTweet);
         res.status(201).json(tweets);
     },
-    putTweet: (req, res) => {
-        const { favorites } = req.body;
-        if (favorites) {
-            const newTweet = {
-                favorites: tweets.favorites + 1
-            }
+
+    putLike: (req, res) => {
+        const idLike = req.params.id;
+        likeTweet += 1;
+        res.status(201).json('Vous venez de likez ce tweet, il possede ' + likeTweet +' likes' );
+        if (!likeTweet) {
+            likeTweet= 0;
+            return res.status(400).json({ error: 'Like : ' + likeTweet });
+        }
+    },
+
+    putUnLike: (req, res) => {
+        const idLike = req.params.id;
+        likeTweet -= 1;
+        res.status(201).json('Vous avez deja likez ce tweet, il possede ' + likeTweet +' likes');
+        if (!likeTweet) {
+            likeTweet = 0;
+            return res.status(400).json({ error: 'Like : ' + likeTweet });
         }
     },
     deleteTweetId: (req, res) => {
         const id = req.params.id;
-        // if (id == newTweet.id) {
-            tweets.splice(id-1, 1);
-            res.status(201).json(tweets);
-        // }
+        tweets.splice(id - 1, 1);
+        res.status(201).json(tweets);
     }
 }
 

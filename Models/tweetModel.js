@@ -2,7 +2,7 @@ const twiterAPI = {
     tweets: [
         {
             "date": 1604299903000,
-            "favorites": "92746",
+            'favorites': '92',
             "id": 1,
             "iduser": 1,
             "replies": "24785",
