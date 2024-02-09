@@ -2,11 +2,11 @@ const twiterAPI = require('../Models/tweetModel.js');
 const tweets = twiterAPI.tweets;
 const users = twiterAPI.users;
 // let likeTweet = parseInt(tweets.favorites);
-
 let likeTweet = 56;
+
 const tweetController = {
     postTweet: (req, res) => {
-        const { text, image, idUser } = req.body;
+        const { text, idUser } = req.body;
         // if (!text || !image || !idUser) {
         //     return res.status(400).json({ error: 'Tweet vide, Publiez un text ou une image' });
         // }
@@ -23,7 +23,6 @@ const tweetController = {
         tweets.push(newTweet);
         res.status(201).send(tweets);
     },
-
 
     putLike: (req, res) => {
         const idLike = req.params.id;
@@ -44,6 +43,7 @@ const tweetController = {
             return res.status(400).json({ error: 'Like : ' + likeTweet });
         }
     },
+    
     deleteTweetId: (req, res) => {
         const id = req.params.id;
         tweets.splice(id - 1, 1);
