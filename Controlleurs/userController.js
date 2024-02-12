@@ -41,8 +41,9 @@ const userController = {
             if (err || !validPassword) {
                 return res.status(401).json({ error: "Nom d'utilisateur ou mot de passe invalide" });
             }
-            const token = jwt.sign({ username }, 'code secret');
-            res.json({ token });
+            user.token = jwt.sign({ username }, 'code secret');
+            user.password = null
+            res.json(user);
         });
     },
     deleteUserId: (req, res) => {
@@ -51,4 +52,5 @@ const userController = {
         res.status(201).json(users);
     },
 }
+
 module.exports = userController;

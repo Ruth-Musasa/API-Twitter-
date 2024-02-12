@@ -1,6 +1,7 @@
 const twiterAPI = require('../Models/tweetModel.js');
 const tweets = twiterAPI.tweets;
 const users = twiterAPI.users;
+const multer = require('multer')
 // let likeTweet = parseInt(tweets.favorites);
 let likeTweet = 56;
 
@@ -43,14 +44,21 @@ const tweetController = {
             return res.status(400).json({ error: 'Like : ' + likeTweet });
         }
     },
-    
+
     deleteTweetId: (req, res) => {
         const id = req.params.id;
         tweets.splice(id - 1, 1);
         res.status(201).json(tweets);
     }
 }
-
-module.exports = tweetController;
-
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'ImageUpload')
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null, file.fieldname + '-' + uniqueSuffix)
+    }
+})
+module.exports = {tweetController, storage};
 
