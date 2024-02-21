@@ -1,0 +1,11 @@
+/*
+  Warnings:
+
+  - You are about to drop the column `password` on the `Profile` table. All the data in the column will be lost.
+
+*/
+-- AlterTable
+ALTER TABLE "Profile" DROP COLUMN "password";
+
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "password" SET DATA TYPE TEXT;
