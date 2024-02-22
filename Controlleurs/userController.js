@@ -1,11 +1,12 @@
-const twiterAPI = require ('../Models/tweetModel.js')
+const twiterAPI = require('../Models/tweetModel.js')
 const tweets = twiterAPI.tweets;
-const users = twiterAPI.users;
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+// const LocalStrategy = require('passport-local').Strategy;
 const { PrismaClient } = require('@prisma/client');
+const passport = require('passport');
 const prisma = new PrismaClient();
-
+const users = prisma.User;
 const userController = {
     getUser: async (req, res, next) => {
         const token = req.body.token;
@@ -47,7 +48,7 @@ const userController = {
     },
 
     postUseLogin: async (req, res) => {
-        const {email, password } = req.body;
+        const { email, password } = req.body;
         console.log(req.body);
         try {
             const user = await prisma.User.findUnique({
@@ -63,8 +64,12 @@ const userController = {
             if (!validPassword) {
                 return res.status(401).json({ error: 'Donnée invalide' });
             }
-            const token = jwt.sign({ id: user.id }, 'code Secret');
-            res.json({ token });
+            const token = jwt.sign(
+                { id: user.id },
+                'code Secret',
+                { expiresIn: '24h' }
+            );
+            res.status(200).json({ token , id: user.id });
         } catch (error) {
             console.error("Erreur d'authentification:", error);
             res.status(500).json({ error: "Erreur d'authentification" });
@@ -78,3 +83,8 @@ const userController = {
 }
 
 module.exports = userController;
+
+
+
+
+
