@@ -11,7 +11,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Post {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
@@ -23,11 +22,12 @@ model Post {
   authorId  Int
 }
 
-
 model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  name    String?   
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  name     String?
+  profil   String?
+  Joined   DateTime @default(now())
   password String
-  posts   Post[]
+  posts    Post[]
 }

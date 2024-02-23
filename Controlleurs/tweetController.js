@@ -1,28 +1,39 @@
 const twiterAPI = require('../Models/tweetModel.js');
 const tweets = twiterAPI.tweets;
-const users = twiterAPI.users;
 const multer = require('multer')
 // let likeTweet = parseInt(tweets.favorites);
 let likeTweet = 56;
-
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'ImageUpload');
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, file.fieldname + '-' + uniqueSuffix);
+    }
+});
+const upload = multer({ storage: storage });
 const tweetController = {
     postTweet: (req, res) => {
-        const { text, idUser } = req.body;
-        // if (!text || !image || !idUser) {
-        //     return res.status(400).json({ error: 'Tweet vide, Publiez un text ou une image' });
-        // }
-        const newTweet = {
-            date: new Date(),
-            "favorites": "0",
-            id: tweets.length + 1,
-            idUser,
-            "replies": "0",
-            "retweets": "0",
-            text,
-            image : req.file.path,
-        };
-        tweets.push(newTweet);
-        res.status(201).send(tweets);
+        upload.single('img')(req, res, async function (err) {
+            if (err) {
+                console.error("Erreur de téléchargement de l'image:", err);
+                return res.status(500).json({ error: "Erreur de téléchargement de l'image" });
+            }
+            const { text } = req.body;
+            try {
+                await prisma.User.create({
+                    data: {
+                        text,
+                        image: req.file.path,
+                    },
+                });
+                res.status(201).json({ message: 'Tweet posté avec succès' });
+            } catch (error) {
+                console.error("Erreur du post:", error);
+                res.status(500).json({ error: "Erreur du post" });
+            }
+        });
     },
 
     putLike: (req, res) => {
@@ -51,14 +62,5 @@ const tweetController = {
         res.status(201).json(tweets);
     }
 }
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'ImageUpload')
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-        cb(null, file.fieldname + '-' + uniqueSuffix)
-    }
-})
-module.exports = {tweetController, storage};
 
+module.exports = { tweetController, storage };
